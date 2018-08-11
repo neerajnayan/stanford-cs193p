@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7468FF43211EED3D001F68BC /* Concentration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7468FF42211EED3D001F68BC /* Concentration.swift */; };
+		7468FF45211EF3B6001F68BC /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7468FF44211EF3B6001F68BC /* Card.swift */; };
 		74A151AE211D6BC3004A62FE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A151AD211D6BC3004A62FE /* AppDelegate.swift */; };
 		74A151B0211D6BC3004A62FE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A151AF211D6BC3004A62FE /* ViewController.swift */; };
 		74A151B3211D6BC3004A62FE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74A151B1211D6BC3004A62FE /* Main.storyboard */; };
@@ -15,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7468FF42211EED3D001F68BC /* Concentration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Concentration.swift; sourceTree = "<group>"; };
+		7468FF44211EF3B6001F68BC /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		74A151AA211D6BC3004A62FE /* Concentration.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Concentration.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74A151AD211D6BC3004A62FE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74A151AF211D6BC3004A62FE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +60,8 @@
 			children = (
 				74A151BF211D6D1E004A62FE /* Supporting Files */,
 				74A151AF211D6BC3004A62FE /* ViewController.swift */,
+				7468FF42211EED3D001F68BC /* Concentration.swift */,
+				7468FF44211EF3B6001F68BC /* Card.swift */,
 				74A151B1211D6BC3004A62FE /* Main.storyboard */,
 				74A151B9211D6BC3004A62FE /* Info.plist */,
 			);
@@ -146,6 +152,8 @@
 			files = (
 				74A151B0211D6BC3004A62FE /* ViewController.swift in Sources */,
 				74A151AE211D6BC3004A62FE /* AppDelegate.swift in Sources */,
+				7468FF43211EED3D001F68BC /* Concentration.swift in Sources */,
+				7468FF45211EF3B6001F68BC /* Card.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
