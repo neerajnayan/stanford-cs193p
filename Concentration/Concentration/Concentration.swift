@@ -11,8 +11,36 @@ import Foundation
 class Concentration
 {
     // All below lines are equivalent
-//    var cards = Array<Card>()  // Initializes with default init
-    var cards = [Card]()
+    //    var cards = Array<Card>()  // Initializes with default init
+    private(set) var cards = [Card]()
+    
+    // Computed property
+    private var indexOfOneAndOnlyFaceUpCard: Int? {
+        get {
+            var foundIndex: Int?
+            for index in cards.indices
+            {
+                if cards[index].isFaceUp
+                {
+                    if foundIndex == nil
+                    {
+                        foundIndex = index
+                    } else
+                    {
+                        return nil
+                    }
+                }
+            }
+            return foundIndex
+        }
+        // same as set(newValue) {
+        set {
+            for index in cards.indices
+            {
+                cards[index].isFaceUp = (index == newValue)
+            }
+        }
+    }
     
     // Classes gets free init() if all its members
     // are already initialized
@@ -20,16 +48,17 @@ class Concentration
     // Custom init
     // No external-internal names for numberOfPairsOfCards
     init(numberOfPairsOfCards: Int) {
+        assert(numberOfPairsOfCards > 0, "Concentration:init(\(numberOfPairsOfCards)): you must have at least one pair of cards")
         for _ in 1...numberOfPairsOfCards
         {
             let card = Card()
-        
+            
             // Assigning struct to another variable copies it
-//            let matchingCard = card
+            //            let matchingCard = card
             
             // Puting struct in array, copies them by value
-//            cards.append(card)
-//            cards.append(card)
+            //            cards.append(card)
+            //            cards.append(card)
             
             cards += [card, card]
         }
@@ -37,7 +66,7 @@ class Concentration
         shuffle()
     }
     
-    func shuffle() {
+    private func shuffle() {
         let c = cards.count
         guard c > 1 else { return }
         
@@ -49,9 +78,9 @@ class Concentration
         }
     }
     
-    var indexOfOneAndOnlyFaceUpCard: Int?
     func chooseCard(at index: Int)
     {
+        assert(cards.indices.contains(index), "Concentration.chooseCard(at: \(index)): chosen index not in the cards")
         if !cards[index].isMatched
         {
             if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != index {
@@ -61,14 +90,8 @@ class Concentration
                     cards[index].isMatched = true
                 }
                 cards[index].isFaceUp = true
-                indexOfOneAndOnlyFaceUpCard = nil
             } else
             {
-                for faceUpCard in cards.indices
-                {
-                    cards[faceUpCard].isFaceUp = false
-                }
-                cards[index].isFaceUp = true
                 indexOfOneAndOnlyFaceUpCard = index
             }
         }
