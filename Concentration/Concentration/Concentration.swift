@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Concentration
+struct Concentration
 {
     // All below lines are equivalent
     //    var cards = Array<Card>()  // Initializes with default init
@@ -17,21 +17,35 @@ class Concentration
     // Computed property
     private var indexOfOneAndOnlyFaceUpCard: Int? {
         get {
-            var foundIndex: Int?
-            for index in cards.indices
-            {
-                if cards[index].isFaceUp
-                {
-                    if foundIndex == nil
-                    {
-                        foundIndex = index
-                    } else
-                    {
-                        return nil
-                    }
-                }
-            }
-            return foundIndex
+            // Following statements are similar
+//            let faceUpCardIndices = cards.indices.filter({ (operand: Int) -> Bool in return cards[operand].isFaceUp })
+//            let faceUpCardIndices = cards.indices.filter({ (operand: Int) in return cards[operand].isFaceUp })
+//            let faceUpCardIndices = cards.indices.filter({ (operand) in return cards[operand].isFaceUp })
+//            let faceUpCardIndices = cards.indices.filter({ (operand) in cards[operand].isFaceUp })
+//            let faceUpCardIndices = cards.indices.filter({ cards[$0].isFaceUp })
+//            let faceUpCardIndices = cards.indices.filter() { cards[$0].isFaceUp }
+            // Without extension declared at the end of this file
+//            let faceUpCardIndices = cards.indices.filter { cards[$0].isFaceUp }
+//            return faceUpCardIndices.count == 1 ? faceUpCardIndices.first : nil
+            
+            // With extension declared at the end of this file
+            return cards.indices.filter { cards[$0].isFaceUp }.oneAndOnly
+            
+//            var foundIndex: Int?
+//            for index in cards.indices
+//            {
+//                if cards[index].isFaceUp
+//                {
+//                    if foundIndex == nil
+//                    {
+//                        foundIndex = index
+//                    } else
+//                    {
+//                        return nil
+//                    }
+//                }
+//            }
+//            return foundIndex
         }
         // same as set(newValue) {
         set {
@@ -66,7 +80,7 @@ class Concentration
         shuffle()
     }
     
-    private func shuffle() {
+    mutating private func shuffle() {
         let c = cards.count
         guard c > 1 else { return }
         
@@ -78,13 +92,13 @@ class Concentration
         }
     }
     
-    func chooseCard(at index: Int)
+    mutating func chooseCard(at index: Int)
     {
         assert(cards.indices.contains(index), "Concentration.chooseCard(at: \(index)): chosen index not in the cards")
         if !cards[index].isMatched
         {
             if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != index {
-                if cards[matchIndex].identifier == cards[index].identifier
+                if cards[matchIndex] == cards[index]
                 {
                     cards[matchIndex].isMatched = true
                     cards[index].isMatched = true
@@ -95,5 +109,12 @@ class Concentration
                 indexOfOneAndOnlyFaceUpCard = index
             }
         }
+    }
+}
+
+extension Collection
+{
+    var oneAndOnly: Element? {
+        return count == 1 ? first : nil
     }
 }
