@@ -8,7 +8,11 @@
 
 import UIKit
 
-class ConcentrationViewController: UIViewController {
+class ConcentrationViewController: VCLLoggingViewController {
+    
+    override var vclLoggingName: String {
+        return "Game"
+    }
     
     // Lazy indicates -> Do not initialize as yet, until someone uses it
     // This is needed as initialization depends on cardButtons
