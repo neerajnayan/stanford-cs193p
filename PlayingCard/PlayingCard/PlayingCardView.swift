@@ -177,6 +177,7 @@ class PlayingCardView: UIView {
     // Never ever call this method directly, system calls it
     // on your behalf when it needs to draw your view or when you invoke setNeedsDisplay()
     override func draw(_ rect: CGRect) {
+        print ("draw() = \(bounds.size.height) \(cornerRadius)")
         let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius)
         // Ensure this rounded-rect is the clipping area of all my drawings
         roundedRect.addClip()
@@ -263,6 +264,20 @@ extension CGPoint {
     }
 }
 
+extension CGFloat {
+    var arc4random: CGFloat {
+        if self > 0
+        {
+            return CGFloat(arc4random_uniform(UInt32(self * 100))/100)
+        } else if self < 0
+        {
+            return -CGFloat(arc4random_uniform(UInt32(abs(self)*100))/100)
+        } else
+        {
+            return 0
+        }
+    }
+}
 
 
 

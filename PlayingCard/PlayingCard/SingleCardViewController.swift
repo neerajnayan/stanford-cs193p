@@ -8,9 +8,9 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class SingleCardViewController: UIViewController {
     
-    var deck = PlayingCardDeck()
+    private var deck = PlayingCardDeck()
     
     @IBOutlet weak var playingCardView: PlayingCardView! {
         didSet {
