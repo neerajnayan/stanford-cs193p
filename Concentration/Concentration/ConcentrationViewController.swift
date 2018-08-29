@@ -8,19 +8,19 @@
 
 import UIKit
 
-class ConcentrationViewController: VCLLoggingViewController {
+class ConcentrationViewController: UIViewController {
     
-    override var vclLoggingName: String {
-        return "Game"
-    }
+//    override var vclLoggingName: String {
+//        return "Game"
+//    }
     
     // Lazy indicates -> Do not initialize as yet, until someone uses it
-    // This is needed as initialization depends on cardButtons
+    // This is needed as initialization depends on visibleCardButtons
     private lazy var game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
     
     // Read only property
     var numberOfPairsOfCards: Int {
-        return (cardButtons.count + 1)/2
+        return (visibleCardButtons.count + 1)/2
     }
     
     // Above list is same as: var flipCount = 0
@@ -31,6 +31,15 @@ class ConcentrationViewController: VCLLoggingViewController {
     }
     
     @IBOutlet private var cardButtons: [UIButton]!
+    private var visibleCardButtons: [UIButton]! {
+        return cardButtons?.filter { !$0.superview!.isHidden }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateViewFromModel()
+    }
+    
     @IBOutlet private weak var flipCountLabel: UILabel!
     {
         didSet {
@@ -40,7 +49,7 @@ class ConcentrationViewController: VCLLoggingViewController {
     @IBOutlet private weak var newGameButton: UIButton!
     
     @IBAction private func touchNewGame(_ sender: UIButton) {
-        game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1)/2)
+        game = Concentration(numberOfPairsOfCards: (visibleCardButtons.count + 1)/2)
         flipCount = 0
         emoji.removeAll()
         emojiChoices = emojiChoicesCp
@@ -49,7 +58,7 @@ class ConcentrationViewController: VCLLoggingViewController {
     
     @IBAction private func touchCard(_ sender: UIButton) {
         flipCount += 1
-        if let cardNumber = cardButtons.index(of: sender) {
+        if let cardNumber = visibleCardButtons.index(of: sender) {
             game.chooseCard(at: cardNumber)
             updateViewFromModel()
         } else {
@@ -63,8 +72,16 @@ class ConcentrationViewController: VCLLoggingViewController {
             .strokeWidth: 5.0,
             .strokeColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         ]
-        let attributedString = NSAttributedString(string: "Flips: \(flipCount)", attributes: attributes)
+        let attributedString = NSAttributedString(
+            string: traitCollection.verticalSizeClass == .compact ? "Flips\n\(flipCount)" : "Flips: \(flipCount)",
+            attributes: attributes)
         flipCountLabel.attributedText = attributedString
+    }
+    
+    // Callback when trait collection changes
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        updateFlipCountLabel()
     }
     
     private func updateViewFromModel()
@@ -73,12 +90,12 @@ class ConcentrationViewController: VCLLoggingViewController {
         // invoked from theme.didSet which is invoked
         // from prepare method in ConcentrationThemeChooserViewControl
         // while seting the theme as part of preparing this viewcontroller
-        if cardButtons == nil {
+        if visibleCardButtons == nil {
             return
         }
         
         var isGameOver = true
-        for index in cardButtons.indices
+        for index in visibleCardButtons.indices
         {
             let card = game.cards[index]
             if !card.isMatched {
@@ -87,9 +104,9 @@ class ConcentrationViewController: VCLLoggingViewController {
             }
         }
         
-        for index in cardButtons.indices
+        for index in visibleCardButtons.indices
         {
-            let button = cardButtons[index]
+            let button = visibleCardButtons[index]
             if isGameOver {
                 button.setTitle("", for: UIControlState.normal)
                 button.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0)
